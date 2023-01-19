@@ -1,4 +1,4 @@
-function foo1 (){
+function foo2 (){
     let a = false
     if (a){
         let r = 0
