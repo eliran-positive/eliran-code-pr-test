@@ -4,4 +4,4 @@ function foo () {
 
 const a = foo();
 
-console.log(a);
+console.log(a)
