@@ -28,5 +28,13 @@ module.exports = {
     "indent": ["error", 2],
     "semi": ["error", "always"],
     "space-before-function-paren": ["error", "always"],
+    "max-lines": [
+      "error",
+      {
+        "max": 500,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ]
   }
 };
