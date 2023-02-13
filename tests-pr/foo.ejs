@@ -1,0 +1,769 @@
+<div id="home-nav-main">
+  <nav class="navbar navbar-light" id="home-header">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header" >
+          <button type="button" class="navbar-toggle collapsed"  ng-init="home.navCollapsed = true" ng-click="home.navCollapsed = !home.navCollapsed">
+            <!-- <span class="sr-only">Toggle navigation</span> -->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a ng-if="!home.isCaspitTenant() && !home.isKittyUser() && !home.isTerminalTenant()" class="navbar-brand" ng-click="home.logoRoute()">
+          <strong style="font-weight:bold; color:#8AB833;">POS</strong>IT
+        </a>
+        <img ng-if="(home.isCaspitTenant() || home.isTerminalTenant()) && !home.isKittyUser()" id="caspit-logo" src="../caspit-hyp.svg" ng-click="home.logoRoute()" />
+        <img ng-if="home.isKittyUser()" id="caspit-logo" src="../hello-kitty.jpg" ng-click="home.logoRoute()" />
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="navbar-collapse" uib-collapse="home.navCollapsed">
+        <ul class="nav navbar-nav" uib-dropdown-menu>
+          <li class="dropdown" ng-if="home.allowItems && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle" uib-dropdown-toggle role="button"
+            aria-haspopup="true" aria-expanded="false">פריטים <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.catalog-index">קטלוג הפריטים</a></li>
+              <li><a ng-if="home.isMerkaz && !home.isExtCatalogBo" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.create-item">הקמת פריט חדש</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.query-item">שאילתה לפריט</a></li>
+              <li role="separator" class="divider" ng-if="home.isMerkaz && home.isStoreMigvansCompany()"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.store-migvan-index" ng-if="home.isMerkaz && home.isStoreMigvansCompany()">מגווני פריטים</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.new-item-request">בקשה להקמת פריטים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.item-request-index">בקשות להקמת פריטים קודמות</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.item-request-index">אישור/סירוב לבקשות הקמת פריטים</a></li>
+              <li role="separator" ng-if="home.isMerkaz" class="divider"></li>
+              <!-- <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz" ui-sref="root.logical-printer-index">מדפסות לוגיות</a></li> -->
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz" ui-sref="root.logical_printer-index">מדפסות לוגיות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz" ui-sref="root.printer-group-index">קבוצות מדפסות לוגיות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.primary-category-index">קטגוריות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.brand-index" ng-if="home.companyHasItemField('brand')">מותגים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.item_class-index" ng-if="home.companyHasItemField('itemClass')">קבוצות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.item_sub_class-index" ng-if="home.companyHasItemField('itemSubClass')">תתי קבוצות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.family-index" ng-if="home.companyHasItemField('family')">משפחות</a></li>
+              <li role="separator" class="divider" ng-if="home.companyHasItemField('brand') || home.companyHasItemField('itemClass') || home.companyHasItemField('itemSubClass') || home.companyHasItemField('family')"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.menu-item-index">הגדרת תפריטים</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.preparation-instruction-index">הגדרת הוראות הכנה</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.item-group-index">הגדרת קבוצות</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.migvan-index">הגדרת מגוונים</a></li>
+              <li  ng-if="home.isSuperAdmin || home.isWebsiteManager" role="separator" class="divider"></li>
+              <li><a ng-if="home.isSuperAdmin || home.isWebsiteManager" ng-click="home.navCollapsed = true" ui-sref="root.item-link-index">קישורים לפריטים</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.print-barcode-stickers">הדפסת מדבקות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.price-list-index">מחירונים</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.item-package-index">אריזות</a></li>
+              <li role="separator" class="divider"></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.item-locating-code-index">איתור פריט</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.allowInventory && !home.isTerminalTenant()" uib-dropdown>
+              <a href="javascript:void(0)" class="dropdown-toggle"
+                 uib-dropdown-toggle role="button" aria-haspopup="true"
+                aria-expanded="false">מלאי <span class="caret"></span></a>
+              <ul class="dropdown-menu" uib-dropdown-menu>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-correction-index">ספירת מלאי</a></li>
+                  <li><a ng-if="home.isMerkaz || home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.inventory-merge-counts">איחוד ספירות מלאי</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-count-index" ng-if="home.showOldInventoryCount">ספירת מלאי - מנגנון ישן</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.new-inventory-nullification">איפוס מלאי שלא נספר</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.shipment-document-index">תעודות משלוח בין מחסנים/חנויות</a></li>
+              </ul>
+            </li>
+
+          <li class="dropdown" ng-if="home.allowSuppliers && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">ספקים <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-document-index">חשבוניות ספק</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-order-index">הזמנות ספק</a></li>                            
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-index">ספקים</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" ng-if="home.allowEmployees && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">עובדים <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ng-if="!home.isCaveret()" ui-sref="root.employee-index">עובדים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isCaveret() && !home.isDevelopment()" ui-sref="root.employee-caveret-index">עובדים</a></li>
+              <li><a ng-if="home.isDevelopment()" ng-click="home.navCollapsed = true" ui-sref="root.employee-caveret-index">רשימת עובדים - כוורת</a></li>
+              
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.isJr() && home.allowFlights" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">טיסות <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.airport-index">שדות תעופה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.flight-index">טיסות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.stock-plan-index">תוכניות מלאי</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.barset-index">ערכות מלאי</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sale-completion-show">מכירת השלמה לטיסה</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.currencies-index">שערי מטבע</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" ng-if="home.isJr() && home.allowMoneyRoom" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">חדר כספים<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.money-statement-index">שקיות כסף</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.isIsrairCompany()" uib-dropdown>
+              <a href="javascript:void(0)" class="dropdown-toggle"
+                 uib-dropdown-toggle role="button" aria-haspopup="true"
+                aria-expanded="false">טיסות <span class="caret"></span></a>
+              <ul class="dropdown-menu" uib-dropdown-menu>
+                <li><a ng-click="home.navCollapsed = true" ui-sref="root.israir-flight-index">טיסות</a></li>
+              </ul>
+            </li>
+  
+
+
+          <li class="dropdown" ng-if="home.allowCustomers && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">לקוחות<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-customer-index">לקוחות הקפה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-monthly-charge-customer-index">הפקת חשבוניות מרכזות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.merakez-invoice-index">רצף חשבוניות מרכזות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-index">לקוחות מועדון</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.redirectExtendedCustomerClub()" >מועדון לקוחות מורחב</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSBN" ng-click="home.navCollapsed = true" ui-sref="root.company-brill-config-show">הגדרות מועדון בריל</a></li>
+              <li><a ng-if="home.isSmsTenant() && (home.isSuperAdmin || home.isSmsUser)" ng-click="home.navCollapsed = true" ui-sref="root.sms-index">הודעות SMS</a></li>
+              <li role="separator"  class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-group-index">קבוצות לקוח</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.merkaz.chargable-card-index">כרטיסים נטענים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-range-index"> {{ 'chargableCardBulkLoad.range.rangeMenu' | i18next }} </a></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.chargable_card_bulk_load-index">טעינת כרטיסים</a></li>   
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-price-offer-index">הצעות מחיר</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-shipment-index">תעודות משלוח</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="(home.allowWholesaler || home.isSuperAdmin) && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">סיטונאות<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-if="true" ng-click="home.navCollapsed = true" ui-sref="root.wholesaler-order-document-index">הזמנות מלקוח</a></li>
+              <li><a ng-if="true" ng-click="home.navCollapsed = true" ui-sref="root.wholesaler-invoice-index">חשבוניות לקוח</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="(home.isTechnician || home.allowBenefits) && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">הטבות <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true " ng-if="!home.useAdvancedPromotions && !home.isTechnician" ui-sref="root.promotion-index">מבצעים</a></li>
+              <li><a ng-click="home.navCollapsed = true " ng-if="home.useAdvancedPromotions && !home.isTechnician" ui-sref="root.advanced-promotion-index">מבצעים</a></li>
+              <li><a ng-click="home.navCollapsed = true"  ng-if="!home.isTechnician"  ui-sref="root.promotion-barcode-index">קודי מבצע נשרפים</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-if="home.isBoAdmin || home.isTechnician" ng-click="home.navCollapsed = true" ui-sref="root.voucher-index">שוברים</a></li>
+              <li ng-if="home.isBoAdmin" role="separator" class="divider"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.discount-index">הנחות</a></li>
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.coupon-index">קופונים</a></li>
+              <li ng-if="home.isSuperAdmin" role="separator" class="divider"></li>
+              <li ng-if="home.isSuperAdmin"><a ng-click="home.navCollapsed = true" ui-sref="root.block-item-payment-method-index">חסימות אמצעי תשלום לפריט</a></li>
+              <li ng-if="home.isSuperAdmin" role="separator" class="divider"></li>
+              <li><a ng-if="home.isSuperAdmin || home.isBoAdmin" ng-click="home.navCollapsed = true" ui-sref="root.one-time-discount-create">פתיחת הנחה מיוחדת - חד פעמית</a></li>
+              <li><a ng-if="home.isSuperAdmin || home.isBoAdmin" ng-click="home.navCollapsed = true" ui-sref="root.open-sale-credit-create">פתיחת חשבונית לזיכוי</a></li>
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.upsale-index">{{ 'upsale.title' | i18next}}</a></li>
+            </ul>
+          </li>
+          
+          <li class="dropdown" ng-if="home.allowReports && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">דוחות <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+
+              <li class="menu-item dropdown dropdown-submenu">
+                <a tabindex="-1" href="javascript:void(0)">דוחות מרכז רשת<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                <ul class="dropdown dropdown-menu" uib-dropdown>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-report-ho">דוח מכירות למרכז רשת</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-report-ho">דוח מלאי למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-by-store">דוח מלאי לפי חנות</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-color-size">דוח מלאי לפי חנות צבע מידה</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-purchase-report">דוח קניות מספק</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.deposit-report-index">דוח פירוט הפקדות</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.sale-search">איתור חשבונית למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz && home.stores.length > 1"><a ng-click="home.navCollapsed = true" ui-sref="root.merkaz.payment-report-ho">דוח אמצעי תשלום למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.payment-report-ho-include-tamash-index">דוח אמצעי תשלום כולל תמ"ש למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.rikuz-report-merkaz-index">דוח ריכוז עסקאות למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.report-active-employee-on-store-merkaz-index">דוח עובדים במשמרת למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.monthly-cycle-report-stores-index">דוח מחזור חודשי לרשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.sales-item-lines-report-merkaz-index">דוח מכירות שורות לרשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.one-time-discount-report-merkaz-index">דוח מימוש הנחות חד פעמי</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.promotions-report-index">דוח ניתוח מבצעים</a></li>
+                </ul>
+              </li>
+
+              <li ng-if="(home.isBoAdmin || home.isMerkaz) && !home.isTerminalTenant()" class="menu-item dropdown dropdown-submenu">
+                  <a tabindex="-1" href="javascript:void(0)">דוחות לקוח אב<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                  <ul class="dropdown dropdown-menu" uib-dropdown>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.customer-sales-report">דוח קניות לקוחות - פירוט שורות בחשבונית</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-all-customers">דוח קניות הקפה - סיכום כל הלקוחות</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-per-customer">דוח קניות הקפה - סיכום לפי לקוח</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-per-item">דוח קניות הקפה - סיכום לפי פריט</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-customer-item">דוח קניות הקפה - סיכום לפי לקוח ופריט</a></li>
+                  </ul>
+              </li>
+
+              <li ng-if="home.isJr()" class="menu-item dropdown dropdown-submenu">
+                <a tabindex="-1" href="javascript:void(0)">טיסות<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                <ul class="dropdown dropdown-menu" uib-dropdown>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.flight-sales-report-show">דוח מכירות לתקופה</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.flight-moneybag-report-show">דוח הפרשי הצהרות כלכל</a></li>
+                </ul>
+            </li>
+              
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sale-index">דוח מכירות קופה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-report">דוח מכירות לחנות</a></li>
+              <li ng-if="home.isMerkaz"><a ui-sref="root.item-sales-report-by-store-index">דוח מכר לפי חנות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-item-lines-report-index">דוח מכירות שורות לחנות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-items-report-index" > {{ 'salesItemsReport.title' | i18next }}</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-report-color-size">דוח מכירות לחנות עם צבע/מידה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.employee-sales-report">דוח מכירות לעובד</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.payment-report">דוח אמצעי תשלום</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.rikuz-report">דוח ריכוז עסקאות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.xreport-index">דוח X לפי קופות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.report-active-employee-on-store-index">דוח עובדים במשמרת</a></li>
+
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-by-sale-report">
+                דוח שימוש בכרטיסים נטענים לפי עסקה
+              </a></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-by-card-report">
+                דוח שימוש בכרטיסים נטענים לפי כרטיס
+              </a></li>  
+              <li ng-if="home.isMerkaz">
+                <a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-transactions-report-index">
+                  דוח תנועות כרטיסים נטענים
+                </a>
+              </li>  
+              <li ng-if="home.isMerkaz">
+                <a ng-click="home.navCollapsed = true" ui-sref="root.punch-card-transactions-report-index">
+                  דוח תנועות כרטיסיות
+                </a>
+              </li>             
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.voucher-report">דוח ריכוז שוברים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.voucher-credit-report">דוח פירוט שוברי זיכוי</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.manual-actions-report">דוח בקרת פעולות ידניות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.suspicious-activity-log-index">דוח פעולות חריגות (בקרת גניבות)</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isCaveret()" ui-sref="root.cashier-statement-report-index">דו"ח הצהרות מזומנים - סוף יום</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.cashier-statement-log-index">דו"ח הצהרות מזומן</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hours-report">דוח שעות מרוכז</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.created-customers-report">דוח הצטרפות לקוחות מועדון לפי סניפים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-report">דוח לקוחות - הקפה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-customer-report">ריכוז לקוחות הקפה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-documents-exceptional-report">דוח חשבוניות ספק חריגות</a></li>
+              <li><a ng-click="home.navCollapsed = true" href="/bi_plus">מערכת BI</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sale-discount-report-index">דוח הנחות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.compare-hourly-report-index">דוח השוואה שעתי</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.compare-z-report-index">דוח השוואה לפי זד</a></li>
+
+
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.allowInterface && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">ממשקים <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.je-export-index">יצוא פקודת יומן לקובץ</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.michpal-export-index">יצוא שעות עובדים למערכת מכפל</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.priorityService.importItemsPriority()" ng-if="home.usePriority">יבוא פריטים ממערכת PRIORITY</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.priorityService.clearCatalog()" ng-if="home.canClearCatalogPriority">מחיקת קטלוג פריטים - לצורך יבוא מחדש</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.priorityService.importMigvansPriority()" ng-if="home.usePriority">יבוא מחירונים ממערכת PRIORITY</a></li>
+            </ul>
+          </li>
+
+
+          <li ng-if="((home.isBoAdmin || home.allowImportCatalog) && home.allowSettings || (home.allowUserAdminOrMerkazRunCatalog && home.isBoAdmin)) || home.isTechnician || home.isMerkaz" class="dropdown" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">הגדרות<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.user-index">ניהול משתמשים</a></li>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.store-index">הגדרת חנויות</a></li>
+              <li><a ng-if="home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.store-index">הגדרת חנויות</a></li>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.pos-index">הגדרת קופות</a></li>
+              <li><a ng-if="home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.pos-index">הגדרת קופות</a></li>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.self-service-lock-hour-index">הגדרות שעות נעילה לעמדות שירות עצמי </a></li>
+              <li><a ng-if="(home.isMerkaz && home.isSuperAdmin) || home.isTechnician" ng-click="home.navCollapsed = true" ui-sref="root.terminal-index">{{ 'terminal.terminalsConfig' | i18next }}</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant() && !home.isUseNewClientLocator" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.pos-find-index">איתור לקוח</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant() && home.isUseNewClientLocator" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.pos-find-index">{{ 'home.customerLoacatorCaspit' | i18next}}</a></li>
+              <li><a ng-if="home.isTechnician" ng-click="home.navCollapsed = true" ui-sref="root.technician.pos-find-index">איתור לקוח</a></li>
+              <li><a ng-if="(home.isControlCompany() || home.isStaging()) && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.control-dashboard-index">שגיאות קונטרול</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && (home.isTerminalTenant() || home.isStaging())" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.hypos-find-index">{{ 'terminal.searchClient' | i18next }}</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.company-categories">ניהול קטגוריות חברה</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.show-company">הגדרות חברה</a></li>
+              <li><a ng-if="(home.isMerkaz && home.isSuperAdmin && !home.isRoshemetTenant() && !home.isTerminalTenant() && !home.isTechnician)" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-company-form">טופס פתיחת חברה</a></li>
+              <li><a ng-if="home.isTechnician && !home.isRoshemetTenant() && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-company-form">טופס פתיחת חברה</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && (home.isTerminalTenant() || home.isStaging())" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-company-terminal">טופס פתיחת חברת מסוף אשראי</a></li>
+              <li><a ng-if="home.isTechnician && (home.isTerminalTenant() || home.isStaging() || home.isDevelopment())" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-company-terminal">טופס פתיחת חברת מסוף אשראי</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && home.isPrestoTenant()" ng-click="home.navCollapsed = true" ui-sref="root.new-presto-company-show">New Presto Company</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && (home.isRoshemetTenant() || home.isDevOrStaging())" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-company-roshemet">טופס פתיחת חברה קופה רושמת</a></li>
+              <li><a ng-if="home.isTechnician && home.isRoshemetTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-company-roshemet">טופס פתיחת חברה קופה רושמת</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.is_roshemet && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-store-form">טופס פתיחת חנות</a></li>
+              <li><a ng-if="home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-store-form">טופס פתיחת חנות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz && !home.isTerminalTenant()" ui-sref="root.store_goal-index">הגדרת יעדים לחנות</a></li>
+              <li><a ng-if="(home.isMerkaz && home.isSuperAdmin || (home.allowUserAdminOrMerkazRunCatalog && (home.isBoAdmin || home.isMerkaz))) && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.catalog-company">הרצת קטלוג לחברה</a></li>
+              <li><a ng-if="home.isMerkaz && (home.isSuperAdmin || home.allowImportCatalog) && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.csv-import-index">טעינת קבצים</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.format-positive-export">יצוא לפורמט קליטה פוזיטיב</a></li>              
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.copy-company-menu">העתקת תפריטי חברה</a></li>
+              <li ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant()" class="menu-item dropdown dropdown-submenu">
+                <a tabindex="-1" href="javascript:void(0)">ניהול SMS-ים<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                <ul class="dropdown dropdown-menu" uib-dropdown ng-if="home.isMerkaz && home.isSuperAdmin">
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sms-purchase-create">רכישת SMS-ים</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sms-purchase-index">דוח רכישות SMS</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sms-usage-report-show">דוח ניצול SMS</a></li>
+                </ul>
+              </li>
+              <li><a ng-if="home.isMerkaz && home.ultimateAdmin" ng-click="home.navCollapsed = true" ui-sref="root.app-version-index">ניהול גרסאות</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">מידע<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.changelog">לוג שינויים</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.showAboutDialog()" style="cursor: pointer">אודות</a></li>
+             </ul>
+          </li>
+
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <button type="submit" class="btn btn-danger" ng-click="home.logout()">התנתק</button>
+        </form>
+        <ul class="nav navbar-nav navbar-left navbar-select">
+          <li ng-if="!home.hasManyStores && !home.isTechnician"><a href="javascript:void(0)">{{home.user.store.name}}&nbsp;</a></li>
+          <li ng-if="home.isSuperAdmin || home.isTechnician || home.allowedCompanies">
+            <vue-component name="SelectCompany" v-on:switch-company="home.changeCompany" v-props-companies="home.companies" v-props-current-company="home.currentCompany" />
+          </li>
+          <li ng-if="home.hasManyStores || home.isTechnician">
+            <vue-component name="SelectStore" v-on:switch-store="home.changeStore" v-props-stores="home.stores" v-props-current-store="home.currentStore" />
+            </ui-select>
+          </li>
+        </ul>
+
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
+</div>
+
+
+
+<div id="home-nav-main">
+  <nav class="navbar navbar-light" id="home-header">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header" >
+          <button type="button" class="navbar-toggle collapsed"  ng-init="home.navCollapsed = true" ng-click="home.navCollapsed = !home.navCollapsed">
+            <!-- <span class="sr-only">Toggle navigation</span> -->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a ng-if="!home.isCaspitTenant() && !home.isKittyUser() && !home.isTerminalTenant()" class="navbar-brand" ng-click="home.logoRoute()">
+          <strong style="font-weight:bold; color:#8AB833;">POS</strong>IT
+        </a>
+        <img ng-if="(home.isCaspitTenant() || home.isTerminalTenant()) && !home.isKittyUser()" id="caspit-logo" src="../caspit-hyp.svg" ng-click="home.logoRoute()" />
+        <img ng-if="home.isKittyUser()" id="caspit-logo" src="../hello-kitty.jpg" ng-click="home.logoRoute()" />
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="navbar-collapse" uib-collapse="home.navCollapsed">
+        <ul class="nav navbar-nav" uib-dropdown-menu>
+          <li class="dropdown" ng-if="home.allowItems && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle" uib-dropdown-toggle role="button"
+            aria-haspopup="true" aria-expanded="false">פריטים <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.catalog-index">קטלוג הפריטים</a></li>
+              <li><a ng-if="home.isMerkaz && !home.isExtCatalogBo" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.create-item">הקמת פריט חדש</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.query-item">שאילתה לפריט</a></li>
+              <li role="separator" class="divider" ng-if="home.isMerkaz && home.isStoreMigvansCompany()"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.store-migvan-index" ng-if="home.isMerkaz && home.isStoreMigvansCompany()">מגווני פריטים</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.new-item-request">בקשה להקמת פריטים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.item-request-index">בקשות להקמת פריטים קודמות</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.item-request-index">אישור/סירוב לבקשות הקמת פריטים</a></li>
+              <li role="separator" ng-if="home.isMerkaz" class="divider"></li>
+              <!-- <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz" ui-sref="root.logical-printer-index">מדפסות לוגיות</a></li> -->
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz" ui-sref="root.logical_printer-index">מדפסות לוגיות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz" ui-sref="root.printer-group-index">קבוצות מדפסות לוגיות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.primary-category-index">קטגוריות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.brand-index" ng-if="home.companyHasItemField('brand')">מותגים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.item_class-index" ng-if="home.companyHasItemField('itemClass')">קבוצות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.item_sub_class-index" ng-if="home.companyHasItemField('itemSubClass')">תתי קבוצות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.family-index" ng-if="home.companyHasItemField('family')">משפחות</a></li>
+              <li role="separator" class="divider" ng-if="home.companyHasItemField('brand') || home.companyHasItemField('itemClass') || home.companyHasItemField('itemSubClass') || home.companyHasItemField('family')"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.menu-item-index">הגדרת תפריטים</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.preparation-instruction-index">הגדרת הוראות הכנה</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.item-group-index">הגדרת קבוצות</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.migvan-index">הגדרת מגוונים</a></li>
+              <li  ng-if="home.isSuperAdmin || home.isWebsiteManager" role="separator" class="divider"></li>
+              <li><a ng-if="home.isSuperAdmin || home.isWebsiteManager" ng-click="home.navCollapsed = true" ui-sref="root.item-link-index">קישורים לפריטים</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.print-barcode-stickers">הדפסת מדבקות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.price-list-index">מחירונים</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.item-package-index">אריזות</a></li>
+              <li role="separator" class="divider"></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.item-locating-code-index">איתור פריט</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.allowInventory && !home.isTerminalTenant()" uib-dropdown>
+              <a href="javascript:void(0)" class="dropdown-toggle"
+                 uib-dropdown-toggle role="button" aria-haspopup="true"
+                aria-expanded="false">מלאי <span class="caret"></span></a>
+              <ul class="dropdown-menu" uib-dropdown-menu>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-correction-index">ספירת מלאי</a></li>
+                  <li><a ng-if="home.isMerkaz || home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.inventory-merge-counts">איחוד ספירות מלאי</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-count-index" ng-if="home.showOldInventoryCount">ספירת מלאי - מנגנון ישן</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.new-inventory-nullification">איפוס מלאי שלא נספר</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.shipment-document-index">תעודות משלוח בין מחסנים/חנויות</a></li>
+              </ul>
+            </li>
+
+          <li class="dropdown" ng-if="home.allowSuppliers && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">ספקים <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-document-index">חשבוניות ספק</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-order-index">הזמנות ספק</a></li>                            
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-index">ספקים</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" ng-if="home.allowEmployees && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">עובדים <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ng-if="!home.isCaveret()" ui-sref="root.employee-index">עובדים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isCaveret() && !home.isDevelopment()" ui-sref="root.employee-caveret-index">עובדים</a></li>
+              <li><a ng-if="home.isDevelopment()" ng-click="home.navCollapsed = true" ui-sref="root.employee-caveret-index">רשימת עובדים - כוורת</a></li>
+              
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.isJr() && home.allowFlights" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">טיסות <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.airport-index">שדות תעופה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.flight-index">טיסות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.stock-plan-index">תוכניות מלאי</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.barset-index">ערכות מלאי</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sale-completion-show">מכירת השלמה לטיסה</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.currencies-index">שערי מטבע</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" ng-if="home.isJr() && home.allowMoneyRoom" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">חדר כספים<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.money-statement-index">שקיות כסף</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.isIsrairCompany()" uib-dropdown>
+              <a href="javascript:void(0)" class="dropdown-toggle"
+                 uib-dropdown-toggle role="button" aria-haspopup="true"
+                aria-expanded="false">טיסות <span class="caret"></span></a>
+              <ul class="dropdown-menu" uib-dropdown-menu>
+                <li><a ng-click="home.navCollapsed = true" ui-sref="root.israir-flight-index">טיסות</a></li>
+              </ul>
+            </li>
+  
+
+
+          <li class="dropdown" ng-if="home.allowCustomers && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">לקוחות<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-customer-index">לקוחות הקפה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-monthly-charge-customer-index">הפקת חשבוניות מרכזות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.merakez-invoice-index">רצף חשבוניות מרכזות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-index">לקוחות מועדון</a></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.redirectExtendedCustomerClub()" >מועדון לקוחות מורחב</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSBN" ng-click="home.navCollapsed = true" ui-sref="root.company-brill-config-show">הגדרות מועדון בריל</a></li>
+              <li><a ng-if="home.isSmsTenant() && (home.isSuperAdmin || home.isSmsUser)" ng-click="home.navCollapsed = true" ui-sref="root.sms-index">הודעות SMS</a></li>
+              <li role="separator"  class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-group-index">קבוצות לקוח</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.merkaz.chargable-card-index">כרטיסים נטענים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-range-index"> {{ 'chargableCardBulkLoad.range.rangeMenu' | i18next }} </a></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.chargable_card_bulk_load-index">טעינת כרטיסים</a></li>   
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-price-offer-index">הצעות מחיר</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.customer-shipment-index">תעודות משלוח</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="(home.allowWholesaler || home.isSuperAdmin) && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">סיטונאות<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-if="true" ng-click="home.navCollapsed = true" ui-sref="root.wholesaler-order-document-index">הזמנות מלקוח</a></li>
+              <li><a ng-if="true" ng-click="home.navCollapsed = true" ui-sref="root.wholesaler-invoice-index">חשבוניות לקוח</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="(home.isTechnician || home.allowBenefits) && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">הטבות <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true " ng-if="!home.useAdvancedPromotions && !home.isTechnician" ui-sref="root.promotion-index">מבצעים</a></li>
+              <li><a ng-click="home.navCollapsed = true " ng-if="home.useAdvancedPromotions && !home.isTechnician" ui-sref="root.advanced-promotion-index">מבצעים</a></li>
+              <li><a ng-click="home.navCollapsed = true"  ng-if="!home.isTechnician"  ui-sref="root.promotion-barcode-index">קודי מבצע נשרפים</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-if="home.isBoAdmin || home.isTechnician" ng-click="home.navCollapsed = true" ui-sref="root.voucher-index">שוברים</a></li>
+              <li ng-if="home.isBoAdmin" role="separator" class="divider"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.discount-index">הנחות</a></li>
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.coupon-index">קופונים</a></li>
+              <li ng-if="home.isSuperAdmin" role="separator" class="divider"></li>
+              <li ng-if="home.isSuperAdmin"><a ng-click="home.navCollapsed = true" ui-sref="root.block-item-payment-method-index">חסימות אמצעי תשלום לפריט</a></li>
+              <li ng-if="home.isSuperAdmin" role="separator" class="divider"></li>
+              <li><a ng-if="home.isSuperAdmin || home.isBoAdmin" ng-click="home.navCollapsed = true" ui-sref="root.one-time-discount-create">פתיחת הנחה מיוחדת - חד פעמית</a></li>
+              <li><a ng-if="home.isSuperAdmin || home.isBoAdmin" ng-click="home.navCollapsed = true" ui-sref="root.open-sale-credit-create">פתיחת חשבונית לזיכוי</a></li>
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li><a ng-if="home.isMerkaz" ng-click="home.navCollapsed = true" ui-sref="root.upsale-index">{{ 'upsale.title' | i18next}}</a></li>
+            </ul>
+          </li>
+          
+          <li class="dropdown" ng-if="home.allowReports && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">דוחות <span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+
+              <li class="menu-item dropdown dropdown-submenu">
+                <a tabindex="-1" href="javascript:void(0)">דוחות מרכז רשת<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                <ul class="dropdown dropdown-menu" uib-dropdown>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-report-ho">דוח מכירות למרכז רשת</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-report-ho">דוח מלאי למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-by-store">דוח מלאי לפי חנות</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.inventory-color-size">דוח מלאי לפי חנות צבע מידה</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-purchase-report">דוח קניות מספק</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.deposit-report-index">דוח פירוט הפקדות</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.sale-search">איתור חשבונית למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz && home.stores.length > 1"><a ng-click="home.navCollapsed = true" ui-sref="root.merkaz.payment-report-ho">דוח אמצעי תשלום למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.payment-report-ho-include-tamash-index">דוח אמצעי תשלום כולל תמ"ש למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.rikuz-report-merkaz-index">דוח ריכוז עסקאות למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.report-active-employee-on-store-merkaz-index">דוח עובדים במשמרת למרכז רשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.monthly-cycle-report-stores-index">דוח מחזור חודשי לרשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.sales-item-lines-report-merkaz-index">דוח מכירות שורות לרשת</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.one-time-discount-report-merkaz-index">דוח מימוש הנחות חד פעמי</a></li>
+                  <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.promotions-report-index">דוח ניתוח מבצעים</a></li>
+                </ul>
+              </li>
+
+              <li ng-if="(home.isBoAdmin || home.isMerkaz) && !home.isTerminalTenant()" class="menu-item dropdown dropdown-submenu">
+                  <a tabindex="-1" href="javascript:void(0)">דוחות לקוח אב<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                  <ul class="dropdown dropdown-menu" uib-dropdown>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.customer-sales-report">דוח קניות לקוחות - פירוט שורות בחשבונית</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-all-customers">דוח קניות הקפה - סיכום כל הלקוחות</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-per-customer">דוח קניות הקפה - סיכום לפי לקוח</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-per-item">דוח קניות הקפה - סיכום לפי פריט</a></li>
+                    <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.total-sales-customer-item">דוח קניות הקפה - סיכום לפי לקוח ופריט</a></li>
+                  </ul>
+              </li>
+
+              <li ng-if="home.isJr()" class="menu-item dropdown dropdown-submenu">
+                <a tabindex="-1" href="javascript:void(0)">טיסות<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                <ul class="dropdown dropdown-menu" uib-dropdown>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.flight-sales-report-show">דוח מכירות לתקופה</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.flight-moneybag-report-show">דוח הפרשי הצהרות כלכל</a></li>
+                </ul>
+            </li>
+              
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sale-index">דוח מכירות קופה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-report">דוח מכירות לחנות</a></li>
+              <li ng-if="home.isMerkaz"><a ui-sref="root.item-sales-report-by-store-index">דוח מכר לפי חנות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-item-lines-report-index">דוח מכירות שורות לחנות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-items-report-index" > {{ 'salesItemsReport.title' | i18next }}</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sales-report-color-size">דוח מכירות לחנות עם צבע/מידה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.employee-sales-report">דוח מכירות לעובד</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.payment-report">דוח אמצעי תשלום</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.rikuz-report">דוח ריכוז עסקאות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.xreport-index">דוח X לפי קופות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.report-active-employee-on-store-index">דוח עובדים במשמרת</a></li>
+
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-by-sale-report">
+                דוח שימוש בכרטיסים נטענים לפי עסקה
+              </a></li>
+              <li ng-if="home.isMerkaz"><a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-by-card-report">
+                דוח שימוש בכרטיסים נטענים לפי כרטיס
+              </a></li>  
+              <li ng-if="home.isMerkaz">
+                <a ng-click="home.navCollapsed = true" ui-sref="root.chargable-card-transactions-report-index">
+                  דוח תנועות כרטיסים נטענים
+                </a>
+              </li>  
+              <li ng-if="home.isMerkaz">
+                <a ng-click="home.navCollapsed = true" ui-sref="root.punch-card-transactions-report-index">
+                  דוח תנועות כרטיסיות
+                </a>
+              </li>             
+              <li ng-if="home.isMerkaz" role="separator" class="divider"></li>
+
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.voucher-report">דוח ריכוז שוברים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.voucher-credit-report">דוח פירוט שוברי זיכוי</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.manual-actions-report">דוח בקרת פעולות ידניות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.suspicious-activity-log-index">דוח פעולות חריגות (בקרת גניבות)</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isCaveret()" ui-sref="root.cashier-statement-report-index">דו"ח הצהרות מזומנים - סוף יום</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.cashier-statement-log-index">דו"ח הצהרות מזומן</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hours-report">דוח שעות מרוכז</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.created-customers-report">דוח הצטרפות לקוחות מועדון לפי סניפים</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-report">דוח לקוחות - הקפה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.hakafa-customer-report">ריכוז לקוחות הקפה</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.supplier-documents-exceptional-report">דוח חשבוניות ספק חריגות</a></li>
+              <li><a ng-click="home.navCollapsed = true" href="/bi_plus">מערכת BI</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.sale-discount-report-index">דוח הנחות</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.compare-hourly-report-index">דוח השוואה שעתי</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.compare-z-report-index">דוח השוואה לפי זד</a></li>
+
+
+            </ul>
+          </li>
+
+          <li class="dropdown" ng-if="home.allowInterface && !home.isTerminalTenant()" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">ממשקים <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.je-export-index">יצוא פקודת יומן לקובץ</a></li>
+              <li><a ng-click="home.navCollapsed = true" ui-sref="root.michpal-export-index">יצוא שעות עובדים למערכת מכפל</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.priorityService.importItemsPriority()" ng-if="home.usePriority">יבוא פריטים ממערכת PRIORITY</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.priorityService.clearCatalog()" ng-if="home.canClearCatalogPriority">מחיקת קטלוג פריטים - לצורך יבוא מחדש</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.priorityService.importMigvansPriority()" ng-if="home.usePriority">יבוא מחירונים ממערכת PRIORITY</a></li>
+            </ul>
+          </li>
+
+
+          <li ng-if="((home.isBoAdmin || home.allowImportCatalog) && home.allowSettings || (home.allowUserAdminOrMerkazRunCatalog && home.isBoAdmin)) || home.isTechnician || home.isMerkaz" class="dropdown" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">הגדרות<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.user-index">ניהול משתמשים</a></li>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.store-index">הגדרת חנויות</a></li>
+              <li><a ng-if="home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.store-index">הגדרת חנויות</a></li>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.pos-index">הגדרת קופות</a></li>
+              <li><a ng-if="home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.pos-index">הגדרת קופות</a></li>
+              <li><a ng-if="home.isMerkaz && home.isBoAdmin && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.self-service-lock-hour-index">הגדרות שעות נעילה לעמדות שירות עצמי </a></li>
+              <li><a ng-if="(home.isMerkaz && home.isSuperAdmin) || home.isTechnician" ng-click="home.navCollapsed = true" ui-sref="root.terminal-index">{{ 'terminal.terminalsConfig' | i18next }}</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant() && !home.isUseNewClientLocator" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.pos-find-index">איתור לקוח</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant() && home.isUseNewClientLocator" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.pos-find-index">{{ 'home.customerLoacatorCaspit' | i18next}}</a></li>
+              <li><a ng-if="home.isTechnician" ng-click="home.navCollapsed = true" ui-sref="root.technician.pos-find-index">איתור לקוח</a></li>
+              <li><a ng-if="(home.isControlCompany() || home.isStaging()) && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.control-dashboard-index">שגיאות קונטרול</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && (home.isTerminalTenant() || home.isStaging())" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.hypos-find-index">{{ 'terminal.searchClient' | i18next }}</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.company-categories">ניהול קטגוריות חברה</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.show-company">הגדרות חברה</a></li>
+              <li><a ng-if="(home.isMerkaz && home.isSuperAdmin && !home.isRoshemetTenant() && !home.isTerminalTenant() && !home.isTechnician)" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-company-form">טופס פתיחת חברה</a></li>
+              <li><a ng-if="home.isTechnician && !home.isRoshemetTenant() && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-company-form">טופס פתיחת חברה</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && (home.isTerminalTenant() || home.isStaging())" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-company-terminal">טופס פתיחת חברת מסוף אשראי</a></li>
+              <li><a ng-if="home.isTechnician && (home.isTerminalTenant() || home.isStaging() || home.isDevelopment())" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-company-terminal">טופס פתיחת חברת מסוף אשראי</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && home.isPrestoTenant()" ng-click="home.navCollapsed = true" ui-sref="root.new-presto-company-show">New Presto Company</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && (home.isRoshemetTenant() || home.isDevOrStaging())" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-company-roshemet">טופס פתיחת חברה קופה רושמת</a></li>
+              <li><a ng-if="home.isTechnician && home.isRoshemetTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-company-roshemet">טופס פתיחת חברה קופה רושמת</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.is_roshemet && !home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.new-store-form">טופס פתיחת חנות</a></li>
+              <li><a ng-if="home.isTechnician && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.technician.new-store-form">טופס פתיחת חנות</a></li>
+              <li><a ng-click="home.navCollapsed = true" ng-if="home.isMerkaz && !home.isTerminalTenant()" ui-sref="root.store_goal-index">הגדרת יעדים לחנות</a></li>
+              <li><a ng-if="(home.isMerkaz && home.isSuperAdmin || (home.allowUserAdminOrMerkazRunCatalog && (home.isBoAdmin || home.isMerkaz))) && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.catalog-company">הרצת קטלוג לחברה</a></li>
+              <li><a ng-if="home.isMerkaz && (home.isSuperAdmin || home.allowImportCatalog) && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.csv-import-index">טעינת קבצים</a></li>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.format-positive-export">יצוא לפורמט קליטה פוזיטיב</a></li>              
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant()" ng-click="home.navCollapsed = true" ui-sref="root.super-admin.copy-company-menu">העתקת תפריטי חברה</a></li>
+              <li ng-if="home.isMerkaz && home.isSuperAdmin && !home.isTerminalTenant()" class="menu-item dropdown dropdown-submenu">
+                <a tabindex="-1" href="javascript:void(0)">ניהול SMS-ים<span class="glyphicon menu-chveron-icon" ng-class="home.chevronIcon"></span></a>
+                <ul class="dropdown dropdown-menu" uib-dropdown ng-if="home.isMerkaz && home.isSuperAdmin">
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sms-purchase-create">רכישת SMS-ים</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sms-purchase-index">דוח רכישות SMS</a></li>
+                  <li><a ng-click="home.navCollapsed = true" ui-sref="root.sms-usage-report-show">דוח ניצול SMS</a></li>
+                </ul>
+              </li>
+              <li><a ng-if="home.isMerkaz && home.ultimateAdmin" ng-click="home.navCollapsed = true" ui-sref="root.app-version-index">ניהול גרסאות</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" uib-dropdown>
+            <a href="javascript:void(0)" class="dropdown-toggle"
+               uib-dropdown-toggle role="button" aria-haspopup="true"
+              aria-expanded="false">מידע<span class="caret"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu>
+              <li><a ng-if="home.isMerkaz && home.isSuperAdmin" ng-click="home.navCollapsed = true" ui-sref="root.merkaz.changelog">לוג שינויים</a></li>
+              <li><a ng-click="home.navCollapsed = true; home.showAboutDialog()" style="cursor: pointer">אודות</a></li>
+             </ul>
+          </li>
+
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <button type="submit" class="btn btn-danger" ng-click="home.logout()">התנתק</button>
+        </form>
+        <ul class="nav navbar-nav navbar-left navbar-select">
+          <li ng-if="!home.hasManyStores && !home.isTechnician"><a href="javascript:void(0)">{{home.user.store.name}}&nbsp;</a></li>
+          <li ng-if="home.isSuperAdmin || home.isTechnician || home.allowedCompanies">
+            <vue-component name="SelectCompany" v-on:switch-company="home.changeCompany" v-props-companies="home.companies" v-props-current-company="home.currentCompany" />
+          </li>
+          <li ng-if="home.hasManyStores || home.isTechnician">
+            <vue-component name="SelectStore" v-on:switch-store="home.changeStore" v-props-stores="home.stores" v-props-current-store="home.currentStore" />
+            </ui-select>
+          </li>
+        </ul>
+
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
+</div>
