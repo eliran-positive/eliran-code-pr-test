@@ -1,0 +1,13 @@
+Style/Documentation:
+  Enabled: false
+
+Style/ActiveRecordFromPartition:
+  Description: Enforce the use of ActiveRecord::Base.from_partition in methods that query the database.
+  Enabled: true
+  StyleGuide: https://github.com/rubocop-hq/ruby-style-guide
+  Include:
+    - 'app/models/item_line.rb'
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/'
+  CustomInspect: 'ActiveRecord::Relation.new'
